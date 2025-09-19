@@ -143,6 +143,13 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="appointment-number-of-people" class="form-label">
+                                        <?= lang('number_of_people') ?>
+                                    </label>
+                                    <input id="appointment-number-of-people" type="number" min="1" class="form-control" value="1">
+                                </div>
                             </div>
 
                             <div class="col-12 col-sm-6">

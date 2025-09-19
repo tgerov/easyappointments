@@ -39,6 +39,7 @@ App.Components.AppointmentsModal = (function () {
     const $appointmentStatus = $('#appointment-status');
     const $appointmentColor = $('#appointment-color');
     const $appointmentNotes = $('#appointment-notes');
+    const $appointmentNumberOfPeople = $('#appointment-number-of-people');
     const $reloadAppointments = $('#reload-appointments');
     const $selectFilterItem = $('#select-filter-item');
     const $selectService = $('#select-service');
@@ -102,6 +103,7 @@ App.Components.AppointmentsModal = (function () {
                 color: App.Components.ColorSelection.getColor($appointmentColor),
                 status: $appointmentStatus.val(),
                 notes: $appointmentNotes.val(),
+                number_of_people: parseInt($appointmentNumberOfPeople.val()) || 1,
                 is_unavailability: Number(false),
             };
 
@@ -452,6 +454,9 @@ App.Components.AppointmentsModal = (function () {
 
         $language.val(vars('default_language'));
         $timezone.val(vars('default_timezone'));
+
+        // Reset number of people to 1
+        $appointmentNumberOfPeople.val(1);
 
         // Reset color.
         $appointmentColor.find('.color-selection-option:first').trigger('click');

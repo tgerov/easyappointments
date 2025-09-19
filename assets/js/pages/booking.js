@@ -29,6 +29,7 @@ App.Pages.Booking = (function () {
     const $city = $('#city');
     const $zipCode = $('#zip-code');
     const $notes = $('#notes');
+    const $numberOfPeople = $('#number-of-people');
     const $captchaTitle = $('.captcha-title');
     const $availableHours = $('#available-hours');
     const $bookAppointmentSubmit = $('#book-appointment-submit');
@@ -59,6 +60,39 @@ App.Pages.Booking = (function () {
      */
     function detectDatepickerMonthChangeStep(previousDateTimeMoment, nextDateTimeMoment) {
         return previousDateTimeMoment.isAfter(nextDateTimeMoment) ? -1 : 1;
+    }
+
+    /**
+     * Update number of people dropdown options based on selected service's attendants_number.
+     *
+     * @param {String} serviceId The selected service ID.
+     */
+    function updateNumberOfPeopleOptions(serviceId) {
+        if (!serviceId) {
+            return;
+        }
+
+        // Find the selected service in available_services
+        const selectedService = vars('available_services').find(service => service.id == serviceId);
+        
+        if (!selectedService) {
+            return;
+        }
+
+        const attendantsNumber = selectedService.attendants_number || 1;
+        const currentValue = parseInt($numberOfPeople.val()) || 1;
+
+        // Clear and rebuild the dropdown
+        $numberOfPeople.empty();
+
+        for (let i = 1; i <= attendantsNumber; i++) {
+            const text = i === 1 ? `${i} ${lang('person')}` : `${i} ${lang('people')}`;
+            $numberOfPeople.append(new Option(text, i));
+        }
+
+        // Set the value to the previous selection if it's still valid, otherwise set to 1
+        const valueToSet = currentValue <= attendantsNumber ? currentValue : 1;
+        $numberOfPeople.val(valueToSet);
     }
 
     /**
@@ -401,6 +435,9 @@ App.Pages.Booking = (function () {
                 $target.val(),
                 moment(App.Utils.UI.getDateTimePickerValue($selectDate)).format('YYYY-MM-DD'),
             );
+
+            // Update number of people dropdown based on selected service's attendants_number
+            updateNumberOfPeopleOptions(serviceId);
 
             App.Pages.Booking.updateConfirmFrame();
 
@@ -805,6 +842,7 @@ App.Pages.Booking = (function () {
                 ':00',
             end_datetime: calculateEndDatetime(),
             notes: $notes.val(),
+            number_of_people: parseInt($numberOfPeople.val()),
             is_unavailability: false,
             id_users_provider: $selectProvider.val(),
             id_services: $selectService.val(),
@@ -895,6 +933,9 @@ App.Pages.Booking = (function () {
             }
             const appointmentNotes = appointment.notes !== null ? appointment.notes : '';
             $notes.val(appointmentNotes);
+
+            const appointmentNumberOfPeople = appointment.number_of_people || 1;
+            $numberOfPeople.val(appointmentNumberOfPeople);
 
             $customField1.val(customer.custom_field_1);
             $customField2.val(customer.custom_field_2);

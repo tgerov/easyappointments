@@ -27,6 +27,7 @@ class Appointments_model extends EA_Model
         'id_users_provider' => 'integer',
         'id_users_customer' => 'integer',
         'id_services' => 'integer',
+        'number_of_people' => 'integer',
     ];
 
     /**
@@ -47,6 +48,7 @@ class Appointments_model extends EA_Model
         'customerId' => 'id_users_customer',
         'googleCalendarId' => 'id_google_calendar',
         'caldavCalendarId' => 'id_caldav_calendar',
+        'numberOfPeople' => 'number_of_people',
     ];
 
     /**
@@ -160,6 +162,22 @@ class Appointments_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException('Appointment service id is invalid.');
+            }
+
+            // Validate number of people doesn't exceed service attendants limit
+            if (!empty($appointment['number_of_people'])) {
+                $service = $this->db->get_where('services', ['id' => $appointment['id_services']])->row_array();
+                $attendants_number = $service['attendants_number'] ?? 1;
+                
+                if ($appointment['number_of_people'] > $attendants_number) {
+                    throw new InvalidArgumentException(
+                        'Number of people (' . $appointment['number_of_people'] . ') exceeds service limit (' . $attendants_number . ').'
+                    );
+                }
+                
+                if ($appointment['number_of_people'] < 1) {
+                    throw new InvalidArgumentException('Number of people must be at least 1.');
+                }
             }
         }
     }
@@ -640,6 +658,10 @@ class Appointments_model extends EA_Model
 
         if (array_key_exists('caldavCalendarId', $appointment)) {
             $decoded_request['id_caldav_calendar'] = $appointment['caldavCalendarId'];
+        }
+
+        if (array_key_exists('numberOfPeople', $appointment)) {
+            $decoded_request['number_of_people'] = $appointment['numberOfPeople'];
         }
 
         $decoded_request['is_unavailability'] = false;

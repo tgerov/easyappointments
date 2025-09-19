@@ -137,6 +137,23 @@
                     </div>
                 <?php endif; ?>
 
+                <div class="mb-3">
+                    <label for="number-of-people" class="form-label">
+                        <?= lang('number_of_people') ?>
+                        <span class="text-danger">*</span>
+                    </label>
+                    <select id="number-of-people" class="required form-select">
+                        <option value="1">1 <?= lang('person') ?></option>
+                        <option value="2">2 <?= lang('people') ?></option>
+                        <option value="3">3 <?= lang('people') ?></option>
+                        <option value="4">4 <?= lang('people') ?></option>
+                        <option value="5">5 <?= lang('people') ?></option>
+                    </select>
+                    <div class="form-text text-muted">
+                        <?= lang('how_many_people') ?>
+                    </div>
+                </div>
+
                 <?php slot('info_second_column'); ?>
             </div>
 
