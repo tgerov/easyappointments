@@ -162,6 +162,7 @@ App.Utils.CalendarDefaultView = (function () {
                 $appointmentsModal.find('#appointment-location').val(appointment.location);
                 $appointmentsModal.find('#appointment-status').val(appointment.status);
                 $appointmentsModal.find('#appointment-notes').val(appointment.notes);
+                $appointmentsModal.find('#appointment-number-of-people').val(appointment.number_of_people || 1);
                 $appointmentsModal.find('#customer-notes').val(customer.notes);
                 $appointmentsModal.find('#custom-field-1').val(customer.custom_field_1);
                 $appointmentsModal.find('#custom-field-2').val(customer.custom_field_2);
@@ -1625,6 +1626,7 @@ App.Utils.CalendarDefaultView = (function () {
             $appointmentsModal.find('#appointment-location').val(appointment.location);
             $appointmentsModal.find('#appointment-status').val(appointment.status);
             $appointmentsModal.find('#appointment-notes').val(appointment.notes);
+            $appointmentsModal.find('#appointment-number-of-people').val(appointment.number_of_people || 1);
             $appointmentsModal.find('#customer-notes').val(customer.notes);
             $appointmentsModal.find('#custom-field-1').val(customer.custom_field_1);
             $appointmentsModal.find('#custom-field-2').val(customer.custom_field_2);
