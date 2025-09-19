@@ -216,6 +216,12 @@ App.Pages.Booking = (function () {
             $selectService.val(firstServiceId).trigger('change');
         }
 
+        // Initialize number of people dropdown based on the first service
+        const initialServiceId = $selectService.val();
+        if (initialServiceId) {
+            updateNumberOfPeopleOptions(initialServiceId);
+        }
+
         // If the manage mode is true, the appointment data should be loaded by default.
         if (manageMode) {
             applyAppointmentData(vars('appointment_data'), vars('provider_data'), vars('customer_data'));
@@ -442,6 +448,15 @@ App.Pages.Booking = (function () {
             App.Pages.Booking.updateConfirmFrame();
 
             App.Pages.Booking.updateServiceDescription(serviceId);
+        });
+
+        /**
+         * Event: Number of People "Changed"
+         *
+         * Update the confirmation frame when the number of people changes.
+         */
+        $numberOfPeople.on('change', () => {
+            App.Pages.Booking.updateConfirmFrame();
         });
 
         /**
@@ -742,12 +757,16 @@ App.Pages.Booking = (function () {
         }
 
         const timezoneOptionText = $selectTimezone.find('option:selected').text();
+        const numberOfPeople = $numberOfPeople.val();
+        const numberOfPeopleText = numberOfPeople == 1 
+            ? `${numberOfPeople} ${lang('person')}` 
+            : `${numberOfPeople} ${lang('people')}`;
 
         $('#appointment-details').html(`
             <div>
                 <div class="mb-2 fw-bold fs-3">
                     ${serviceOptionText}
-                </div> 
+                </div>
                 <div class="mb-2 fw-bold text-muted">
                     ${providerOptionText}
                 </div>
@@ -762,7 +781,11 @@ App.Pages.Booking = (function () {
                 <div class="mb-2">
                     <i class="fas fa-globe me-2"></i>
                     ${timezoneOptionText}
-                </div> 
+                </div>
+                <div class="mb-2">
+                    <i class="fas fa-users me-2"></i>
+                    ${numberOfPeopleText}
+                </div>
                 <div class="mb-2" ${!Number(service.price) ? 'hidden' : ''}>
                     <i class="fas fa-cash-register me-2"></i>
                     ${Number(service.price).toFixed(2)} ${service.currency}

@@ -485,4 +485,9 @@ $lang['calendar_url'] = 'URL du Calendrier';
 $lang['please_select'] = 'Veuillez Sélectionner';
 $lang['secret_header'] = 'Secret Header';
 $lang['search'] = 'Search';
+$lang['number_of_people'] = 'Nombre de Personnes';
+$lang['group_size'] = 'Taille du Groupe';
+$lang['how_many_people'] = 'Combien de personnes assisteront à ce rendez-vous?';
+$lang['person'] = 'personne';
+$lang['people'] = 'personnes';
 // End
